@@ -1,0 +1,822 @@
+[
+ {
+  "term": "Equity",
+  "def": "Selling ownership (shares). Shareholders get the upside if the company does well but are paid last if it fails.",
+  "aliases": [
+   "Equity"
+  ],
+  "section": "1. The big picture"
+ },
+ {
+  "term": "Debt",
+  "def": "Borrowing money. Lenders get a fixed return and are paid before shareholders, but they don't share in the upside. Because lenders have no upside, they protect themselves with contract terms. Those terms are what deal-data platforms benchmark.",
+  "aliases": [
+   "Debt"
+  ],
+  "section": "1. The big picture"
+ },
+ {
+  "term": "Notes vs bonds",
+  "def": "Both are debt securities sold to investors. \"Notes\" traditionally meant shorter maturities, but in practice the terms are used interchangeably. Most high-yield deals are called \"Senior Notes.\"",
+  "aliases": [
+   "Notes",
+   "Bonds"
+  ],
+  "section": "1. The big picture"
+ },
+ {
+  "term": "M&A (mergers and acquisitions)",
+  "def": "One company buying or combining with another. Governed by a merger agreement (Section 8).",
+  "aliases": [
+   "M&A"
+  ],
+  "section": "1. The big picture"
+ },
+ {
+  "term": "\"What's market?\"",
+  "def": "The question lawyers ask during negotiation: what is typical for comparable deals right now? Answering it requires extracting the same term from many contracts and comparing them.",
+  "why": "This is the core of what deal-data platforms sell. A typical task is to compute a distribution (median, percentiles) of a term or flag deals that are \"off market.\"",
+  "aliases": [
+   "What's market",
+   "On market / off market"
+  ],
+  "section": "1. The big picture"
+ },
+ {
+  "term": "Principal (face amount, aggregate principal amount)",
+  "def": "The amount borrowed and repaid at the end. Here, $500 million.",
+  "why": "Indentures also mention the minimum denomination (often $2,000 or $1,000). A parser that grabs that number instead of the deal size is a common bug.",
+  "aliases": [
+   "Principal",
+   "Aggregate principal amount",
+   "Face amount"
+  ],
+  "section": "2. Bond basics"
+ },
+ {
+  "term": "Par",
+  "def": "100% of face value. Prices are quoted as a percentage of par, so \"redeem at 101%\" means paying $1,010 per $1,000 bond.",
+  "aliases": [
+   "Par"
+  ],
+  "section": "2. Bond basics"
+ },
+ {
+  "term": "Coupon (interest rate)",
+  "def": "The annual interest, here 7.50%, usually paid in two semi-annual installments.",
+  "aliases": [
+   "Coupon",
+   "Interest rate"
+  ],
+  "section": "2. Bond basics"
+ },
+ {
+  "term": "Maturity (maturity date)",
+  "def": "When the principal must be repaid, here 2031. High-yield bonds typically mature 5\u201310 years after issue.",
+  "aliases": [
+   "Maturity"
+  ],
+  "section": "2. Bond basics"
+ },
+ {
+  "term": "Basis point (bp, bps)",
+  "def": "One hundredth of a percent (0.01%). \"+350bps\" means 3.50 percentage points above a benchmark rate.",
+  "aliases": [
+   "Basis point (bp)"
+  ],
+  "section": "2. Bond basics"
+ },
+ {
+  "term": "Indenture",
+  "def": "The contract governing a bond issue, between the issuer and a trustee. It sets out the payment terms, redemption rights, covenants and events of default. Often 100+ pages, organized into numbered articles and sections (e.g. \"Section 4.10 Change of Control\").",
+  "why": "This is the document you'd download and parse to extract bond terms. On EDGAR it is usually filed as Exhibit 4.x.",
+  "aliases": [
+   "Indenture"
+  ],
+  "section": "2. Bond basics"
+ },
+ {
+  "term": "Issuer",
+  "def": "The company that borrows by selling the bonds.",
+  "aliases": [
+   "Issuer"
+  ],
+  "section": "2. Bond basics"
+ },
+ {
+  "term": "Trustee",
+  "def": "A bank (e.g. U.S. Bank, Wilmington Trust, Computershare) that represents all bondholders. Thousands of investors can't negotiate individually, so the trustee enforces the indenture on their behalf.",
+  "aliases": [
+   "Trustee"
+  ],
+  "section": "2. Bond basics"
+ },
+ {
+  "term": "Senior vs subordinated",
+  "def": "Where the debt ranks in the repayment line during bankruptcy. Senior debt is paid before subordinated (junior) debt.",
+  "aliases": [
+   "Senior",
+   "Subordinated"
+  ],
+  "section": "2. Bond basics"
+ },
+ {
+  "term": "Secured vs unsecured",
+  "def": "Secured debt is backed by collateral (specific assets lenders can seize), like a mortgage. Unsecured debt has no collateral. \"Senior secured\" is the safest position; \"senior unsecured\" is first in line among unsecured lenders.",
+  "aliases": [
+   "Senior secured",
+   "Senior unsecured",
+   "Collateral"
+  ],
+  "section": "2. Bond basics"
+ },
+ {
+  "term": "Credit rating",
+  "def": "An agency's grade (S&P, Moody's, Fitch) of how likely a borrower is to repay. S&P's scale runs AAA, AA, A, BBB, BB, B, CCC and down.",
+  "aliases": [
+   "Credit rating"
+  ],
+  "section": "2. Bond basics"
+ },
+ {
+  "term": "Investment grade vs high yield",
+  "def": "Investment grade = rated BBB- or higher: safer, lower coupons, few covenants. High yield (\"junk\") = below BBB-: riskier, higher coupons, heavy covenants.",
+  "why": "Most of the interesting \"what's market\" analysis is in high yield, where covenants are negotiated deal by deal.",
+  "aliases": [
+   "Investment grade",
+   "High yield (junk)"
+  ],
+  "section": "2. Bond basics"
+ },
+ {
+  "term": "Rule 144A / Regulation S",
+  "def": "Exemptions that let companies sell bonds without a full public registration. 144A covers sales to large US institutions (\"qualified institutional buyers\"); Reg S covers sales outside the US. Most high-yield bonds are sold this way.",
+  "why": "Because 144A deals aren't registered, the indenture often appears on EDGAR only as an exhibit to an 8-K filed after closing.",
+  "aliases": [
+   "Rule 144A",
+   "Reg S"
+  ],
+  "section": "2. Bond basics"
+ },
+ {
+  "term": "Optional redemption (call)",
+  "def": "The issuer's right to repay (\"call\") the bonds before maturity at a set price.",
+  "aliases": [
+   "Optional redemption",
+   "Call"
+  ],
+  "section": "3. Repaying early: redemption terms"
+ },
+ {
+  "term": "Non-call period",
+  "def": "An initial window, often 2\u20133 years for high yield (described as \"NC2\" or \"NC3\"), when the bonds can't be called at normal prices.",
+  "aliases": [
+   "Non-call period"
+  ],
+  "section": "3. Repaying early: redemption terms"
+ },
+ {
+  "term": "Step-down call schedule",
+  "def": "After the non-call period, the call price starts above par and falls each year to par.",
+  "ex": "Callable at 103.750% in year 3, 101.875% in year 4, and 100% thereafter. The first call premium is often half the coupon.",
+  "aliases": [
+   "Call schedule",
+   "Step-down call schedule"
+  ],
+  "section": "3. Repaying early: redemption terms"
+ },
+ {
+  "term": "Make-whole",
+  "def": "During the non-call period, the issuer can still repay, but only by paying the present value of every remaining coupon (discounted at a Treasury rate plus a small spread, e.g. T+50bps). It's so expensive that it's effectively a penalty.",
+  "aliases": [
+   "Make-whole"
+  ],
+  "section": "3. Repaying early: redemption terms"
+ },
+ {
+  "term": "Equity clawback",
+  "def": "An exception letting the issuer redeem a slice of the bonds early, usually up to 35\u201340%, using cash from a stock sale, at par plus one year's coupon.",
+  "ex": "For a 7.50% bond, clawback price = 107.50%.",
+  "aliases": [
+   "Equity clawback"
+  ],
+  "section": "3. Repaying early: redemption terms"
+ },
+ {
+  "term": "Change of control",
+  "def": "A defined event in which the company gets a new owner, e.g. an acquirer buys more than 50% of the voting stock, or the company sells substantially all its assets.",
+  "aliases": [
+   "Change of control"
+  ],
+  "section": "4. Change of control"
+ },
+ {
+  "term": "Change of control put",
+  "def": "Bondholders' right to force the company to buy back their bonds if a change of control occurs, almost always at **101%** of principal plus accrued interest. Protects lenders from a new owner who might load the company with more debt.",
+  "why": "101% is so standard that any other value is \"off market,\" which makes it a classic field to extract and benchmark.",
+  "aliases": [
+   "Change of control put",
+   "Change-of-control repurchase price"
+  ],
+  "section": "4. Change of control"
+ },
+ {
+  "term": "Double trigger",
+  "def": "Common in investment-grade bonds: holders can sell back only if there's a change of control **and** a ratings downgrade. Weaker protection than the high-yield single trigger.",
+  "aliases": [
+   "Double trigger"
+  ],
+  "section": "4. Change of control"
+ },
+ {
+  "term": "EBITDA",
+  "def": "Earnings before interest, taxes, depreciation and amortization. A rough proxy for the cash a business generates from operations. Most covenant tests are built on it.",
+  "aliases": [
+   "EBITDA"
+  ],
+  "section": "5. Covenants: the promises borrowers make"
+ },
+ {
+  "term": "Leverage ratio",
+  "def": "Total debt \u00f7 EBITDA. \"4.0x levered\" means debt equals four years of EBITDA. Higher = riskier.",
+  "aliases": [
+   "Leverage",
+   "Leverage ratio"
+  ],
+  "section": "5. Covenants: the promises borrowers make"
+ },
+ {
+  "term": "Interest coverage ratio",
+  "def": "EBITDA \u00f7 interest expense. How many times over earnings cover interest payments. Lower = riskier. A typical test: coverage of at least 2.0x.",
+  "aliases": [
+   "Interest coverage"
+  ],
+  "section": "5. Covenants: the promises borrowers make"
+ },
+ {
+  "term": "Maintenance covenant",
+  "def": "A test the borrower must pass every quarter, like a quarterly checkup. Failing is a default even if the company did nothing new. Typical of bank loans.",
+  "ex": "\"Leverage must not exceed 4.5x at the end of any fiscal quarter.\"",
+  "aliases": [
+   "Maintenance covenant"
+  ],
+  "section": "5. Covenants: the promises borrowers make"
+ },
+ {
+  "term": "Incurrence covenant",
+  "def": "A test checked only when the borrower tries to do something, such as borrow more or pay a dividend. Like a bouncer at a door: business can worsen and nothing triggers. Typical of bonds.",
+  "aliases": [
+   "Incurrence covenant"
+  ],
+  "section": "5. Covenants: the promises borrowers make"
+ },
+ {
+  "term": "Basket",
+  "def": "A size-capped exception to a covenant.",
+  "ex": "\"No additional debt, except up to the greater of $100 million and 15% of EBITDA.\"",
+  "aliases": [
+   "Basket"
+  ],
+  "section": "5. Covenants: the promises borrowers make"
+ },
+ {
+  "term": "Grower basket",
+  "def": "A basket sized as the greater of a fixed dollar amount and a percentage of EBITDA or assets, so it grows with the company. The \"15% of EBITDA\" part above.",
+  "aliases": [
+   "Grower basket"
+  ],
+  "section": "5. Covenants: the promises borrowers make"
+ },
+ {
+  "term": "Builder basket",
+  "def": "Capacity that accumulates over time, usually 50% of cumulative net income since the deal closed, which the company can later use for restricted payments.",
+  "aliases": [
+   "Builder basket"
+  ],
+  "section": "5. Covenants: the promises borrowers make"
+ },
+ {
+  "term": "Ratio debt",
+  "def": "Permission to borrow without a dollar cap as long as a ratio test is met after the borrowing.",
+  "ex": "\"The company may incur debt if, after doing so, its fixed charge coverage ratio would be at least 2.0x.\"",
+  "aliases": [
+   "Ratio debt"
+  ],
+  "section": "5. Covenants: the promises borrowers make"
+ },
+ {
+  "term": "EBITDA add-backs",
+  "def": "Adjustments that increase the EBITDA used in covenant tests, such as expected cost savings from a merger not yet completed. Higher EBITDA means more ratio capacity and bigger grower baskets.",
+  "why": "Uncapped add-backs are a borrower-friendly term that lawyers benchmark closely.",
+  "aliases": [
+   "EBITDA add-backs"
+  ],
+  "section": "5. Covenants: the promises borrowers make"
+ },
+ {
+  "term": "Covenant-lite",
+  "def": "A loan with no maintenance covenants, so it behaves like a bond. Now the norm for large leveraged loans.",
+  "aliases": [
+   "Covenant-lite"
+  ],
+  "section": "5. Covenants: the promises borrowers make"
+ },
+ {
+  "term": "Restricted vs unrestricted subsidiaries",
+  "def": "Restricted subsidiaries are bound by the covenants and support the debt. Unrestricted subsidiaries sit outside the covenants, so assets moved there are out of lenders' reach. Central to the J.Crew story in Section 7.",
+  "aliases": [
+   "Restricted subsidiary",
+   "Unrestricted subsidiary"
+  ],
+  "section": "5. Covenants: the promises borrowers make"
+ },
+ {
+  "term": "Credit agreement",
+  "def": "The contract governing a loan. On EDGAR usually filed as Exhibit 10.x.",
+  "aliases": [
+   "Credit agreement"
+  ],
+  "section": "6. Loans and credit agreements"
+ },
+ {
+  "term": "Borrower",
+  "def": "The company taking the loan.",
+  "aliases": [
+   "Borrower"
+  ],
+  "section": "6. Loans and credit agreements"
+ },
+ {
+  "term": "Lenders and syndicate",
+  "def": "The banks and funds providing the money. A large loan is split among a group, the syndicate.",
+  "aliases": [
+   "Lenders",
+   "Syndicate"
+  ],
+  "section": "6. Loans and credit agreements"
+ },
+ {
+  "term": "Administrative agent",
+  "def": "The bank that runs the loan for the syndicate: collects payments, distributes them and handles notices. Plays roughly the role a trustee plays for bonds.",
+  "aliases": [
+   "Administrative agent"
+  ],
+  "section": "6. Loans and credit agreements"
+ },
+ {
+  "term": "Guarantors",
+  "def": "Other entities, usually the borrower's subsidiaries, that promise to repay if the borrower can't. Guarantees give lenders claims against the subsidiaries' assets. Their release is central to the Chewy story in Section 7.",
+  "aliases": [
+   "Guarantors",
+   "Guarantee"
+  ],
+  "section": "6. Loans and credit agreements"
+ },
+ {
+  "term": "Revolver (revolving credit facility)",
+  "def": "A credit line the company draws, repays and redraws as needed, like a corporate credit card.",
+  "aliases": [
+   "Revolver"
+  ],
+  "section": "6. Loans and credit agreements"
+ },
+ {
+  "term": "Term Loan A (TLA)",
+  "def": "Borrowed all at once and repaid in steady installments. Held mainly by banks.",
+  "aliases": [
+   "Term Loan A"
+  ],
+  "section": "6. Loans and credit agreements"
+ },
+ {
+  "term": "Term Loan B (TLB)",
+  "def": "Borrowed all at once with only small (often 1% per year) repayments until maturity. Sold to institutional investors such as CLO funds. The workhorse of leveraged finance.",
+  "aliases": [
+   "Term Loan B"
+  ],
+  "section": "6. Loans and credit agreements"
+ },
+ {
+  "term": "SOFR + margin",
+  "def": "A floating interest rate. SOFR (Secured Overnight Financing Rate) is the benchmark short-term US rate that replaced LIBOR. The margin (spread) is fixed in the contract.",
+  "ex": "SOFR of 4.3% + a 3.00% (300bps) margin = 7.3% for that period.",
+  "aliases": [
+   "SOFR",
+   "Margin (spread)"
+  ],
+  "section": "6. Loans and credit agreements"
+ },
+ {
+  "term": "Pricing grid",
+  "def": "A table that lowers the margin as leverage improves.",
+  "ex": "+300bps above 4.0x leverage, +275bps between 3.0x and 4.0x, +250bps below 3.0x.",
+  "aliases": [
+   "Pricing grid"
+  ],
+  "section": "6. Loans and credit agreements"
+ },
+ {
+  "term": "Financial covenants",
+  "def": "Maintenance tests in a credit agreement, most commonly a maximum leverage ratio and a minimum interest coverage ratio.",
+  "aliases": [
+   "Financial covenants"
+  ],
+  "section": "6. Loans and credit agreements"
+ },
+ {
+  "term": "Events of default",
+  "def": "Events that let lenders demand immediate repayment (\"acceleration\"): missed payments, covenant breaches, bankruptcy and similar.",
+  "aliases": [
+   "Events of default",
+   "Acceleration"
+  ],
+  "section": "6. Loans and credit agreements"
+ },
+ {
+  "term": "Cross-default",
+  "def": "A default on other debt (above a size threshold) also counts as a default under this agreement, so one default can topple all of a company's debt.",
+  "aliases": [
+   "Cross-default"
+  ],
+  "section": "6. Loans and credit agreements"
+ },
+ {
+  "term": "MFN (most favored nation)",
+  "def": "If the company later adds a new loan at a higher rate, existing lenders' rate is bumped up to within a cushion of it, often 50bps. The negotiation is over the size of the cushion and how long the protection lasts (the \"sunset\").",
+  "aliases": [
+   "MFN"
+  ],
+  "section": "6. Loans and credit agreements"
+ },
+ {
+  "term": "Liability management exercise (LME)",
+  "def": "A transaction where a struggling company uses flexibility in its own debt contracts to raise new money or cut its debt, often at the expense of some existing lenders.",
+  "aliases": [
+   "Liability management (LME)"
+  ],
+  "section": "7. Liability management and \"blockers\""
+ },
+ {
+  "term": "Blocker",
+  "def": "Contract language added to close a specific loophole. Each well-known one is named after the case that exposed the loophole.",
+  "aliases": [
+   "Blocker"
+  ],
+  "section": "7. Liability management and \"blockers\""
+ },
+ {
+  "term": "J.Crew blocker",
+  "def": "J.Crew moved valuable brand IP into an unrestricted subsidiary, outside the covenants, and borrowed against it. A J.Crew blocker bars moving material IP to unrestricted subsidiaries.",
+  "aliases": [
+   "J.Crew blocker"
+  ],
+  "section": "7. Liability management and \"blockers\""
+ },
+ {
+  "term": "Serta blocker",
+  "def": "Serta's majority lenders cut a side deal that put their debt ahead of the minority's (a non-pro-rata \"uptier\" exchange). A Serta blocker requires every affected lender's consent before changing repayment priority.",
+  "aliases": [
+   "Serta blocker",
+   "Uptier"
+  ],
+  "section": "7. Liability management and \"blockers\""
+ },
+ {
+  "term": "Chewy blocker",
+  "def": "PetSmart transferred shares of its subsidiary Chewy so Chewy was no longer wholly owned, which under the contract automatically released Chewy's guarantee of the debt. A Chewy blocker stops a guarantee being released just because a subsidiary stops being wholly owned.",
+  "aliases": [
+   "Chewy blocker"
+  ],
+  "section": "7. Liability management and \"blockers\""
+ },
+ {
+  "term": "Merger agreement",
+  "def": "The contract to acquire a company. On EDGAR usually filed as Exhibit 2.1 to an 8-K.",
+  "aliases": [
+   "Merger agreement"
+  ],
+  "section": "8. M&A agreements"
+ },
+ {
+  "term": "Reps and warranties",
+  "def": "Statements of fact one side makes about itself (\"our financial statements are accurate,\" \"there is no undisclosed litigation\"). If they prove false, the other side may be able to walk away.",
+  "aliases": [
+   "Reps and warranties"
+  ],
+  "section": "8. M&A agreements"
+ },
+ {
+  "term": "Closing conditions",
+  "def": "What must be true before the deal completes: regulatory approval, a shareholder vote, reps still accurate, no MAE.",
+  "aliases": [
+   "Closing conditions"
+  ],
+  "section": "8. M&A agreements"
+ },
+ {
+  "term": "MAE / MAC (material adverse effect / change)",
+  "def": "The buyer's escape hatch if the target's business suffers a severe, lasting hit before closing. The carve-outs are what matter: general economic downturns, pandemics and industry-wide problems usually don't count. Courts very rarely find that an MAE occurred.",
+  "aliases": [
+   "MAE / MAC",
+   "MAE carve-outs"
+  ],
+  "section": "8. M&A agreements"
+ },
+ {
+  "term": "Termination fee (break fee)",
+  "def": "What the target pays the buyer if the deal ends for certain reasons, typically because the target accepts a better offer. Usually about 2\u20134% of deal value.",
+  "aliases": [
+   "Termination fee"
+  ],
+  "section": "8. M&A agreements"
+ },
+ {
+  "term": "Reverse termination fee",
+  "def": "What the buyer pays the target if the buyer can't close, e.g. because financing or regulatory approval fails.",
+  "aliases": [
+   "Reverse termination fee"
+  ],
+  "section": "8. M&A agreements"
+ },
+ {
+  "term": "Outside date",
+  "def": "The deadline after which either side can terminate if the deal hasn't closed. Often extendable for pending regulatory approvals.",
+  "aliases": [
+   "Outside date"
+  ],
+  "section": "8. M&A agreements"
+ },
+ {
+  "term": "No-shop",
+  "def": "Bars the target from soliciting or negotiating with other bidders after signing.",
+  "aliases": [
+   "No-shop"
+  ],
+  "section": "8. M&A agreements"
+ },
+ {
+  "term": "Go-shop",
+  "def": "Lets the target actively seek better offers for a set window (often 30\u201345 days) after signing, usually with a lower termination fee for a bidder found in that window.",
+  "aliases": [
+   "Go-shop"
+  ],
+  "section": "8. M&A agreements"
+ },
+ {
+  "term": "Fiduciary out",
+  "def": "The target board's right to accept a superior unsolicited offer despite the no-shop, because directors owe duties to shareholders. Using it usually triggers the termination fee.",
+  "aliases": [
+   "Fiduciary out"
+  ],
+  "section": "8. M&A agreements"
+ },
+ {
+  "term": "EDGAR",
+  "def": "The SEC's Electronic Data Gathering, Analysis, and Retrieval system. Every public filing since the mid-1990s is available at sec.gov.",
+  "aliases": [
+   "EDGAR"
+  ],
+  "section": "9. SEC EDGAR mechanics"
+ },
+ {
+  "term": "CIK (Central Index Key)",
+  "def": "A company's permanent numeric ID. APIs often require it zero-padded to 10 digits.",
+  "ex": "CIK 320193 \u2192 0000320193.",
+  "aliases": [
+   "CIK"
+  ],
+  "section": "9. SEC EDGAR mechanics"
+ },
+ {
+  "term": "Accession number",
+  "def": "The unique ID of one filing, formatted filer-ID-year-sequence. It forms part of every document's URL.",
+  "ex": "0000950170-24-012345.",
+  "aliases": [
+   "Accession number"
+  ],
+  "section": "9. SEC EDGAR mechanics"
+ },
+ {
+  "term": "8-K items",
+  "def": "Each 8-K says which events it reports by item number. Key ones: **Item 1.01** entry into a material definitive agreement; **Item 2.03** creation of a direct financial obligation (new debt); **Item 9.01** financial statements and exhibits (the list of attachments).",
+  "aliases": [
+   "8-K Item 1.01",
+   "8-K Item 2.03",
+   "8-K Item 9.01"
+  ],
+  "section": "9. SEC EDGAR mechanics"
+ },
+ {
+  "term": "Exhibit numbering",
+  "def": "Attachments follow a standard scheme: **2.x** merger and acquisition agreements; **4.x** instruments defining security holders' rights, including indentures; **10.x** material contracts, including credit agreements.",
+  "why": "Filtering filings by exhibit type is how you'd find indentures without opening every 8-K.",
+  "aliases": [
+   "Exhibit 2.x",
+   "Exhibit 4.x",
+   "Exhibit 10.x"
+  ],
+  "section": "9. SEC EDGAR mechanics"
+ },
+ {
+  "term": "Full-index files",
+  "def": "Quarterly lists of every filing (company, form type, date, path), under sec.gov/Archives/edgar/full-index/YEAR/QTRn/ (e.g. form.idx, master.idx). The simplest way to enumerate all 8-Ks in a quarter.",
+  "aliases": [
+   "Full-index files"
+  ],
+  "section": "9. SEC EDGAR mechanics"
+ },
+ {
+  "term": "Submissions JSON",
+  "def": "A per-company JSON file of its filing history at data.sec.gov/submissions/CIK##########.json. Best when you start from a list of companies.",
+  "aliases": [
+   "Submissions JSON"
+  ],
+  "section": "9. SEC EDGAR mechanics"
+ },
+ {
+  "term": "Full-text search",
+  "def": "Keyword search across the text of filings since 2001 (EDGAR full-text search, backed by an efts.sec.gov API). Useful for finding filings containing phrases like \"indenture\" and \"change of control.\"",
+  "aliases": [
+   "Full-text search"
+  ],
+  "section": "9. SEC EDGAR mechanics"
+ },
+ {
+  "term": "Filing index page",
+  "def": "Each filing's landing page listing every document in it with its exhibit type. Where you identify which file is Exhibit 4.1.",
+  "aliases": [
+   "Filing index page"
+  ],
+  "section": "9. SEC EDGAR mechanics"
+ },
+ {
+  "term": "Bulk data",
+  "def": "Nightly zip archives of all submissions JSON and all XBRL company facts. Gigabytes in size, so download them with streaming, resumable logic.",
+  "aliases": [
+   "Bulk data"
+  ],
+  "section": "9. SEC EDGAR mechanics"
+ },
+ {
+  "term": "XBRL and company facts",
+  "def": "XBRL is the tagged, machine-readable format for financial-statement numbers in filings. \"Company facts\" (data.sec.gov/api/xbrl/companyfacts/) gives every reported value per company, e.g. revenue by period.",
+  "aliases": [
+   "XBRL",
+   "Company facts"
+  ],
+  "section": "9. SEC EDGAR mechanics"
+ },
+ {
+  "term": "Fair access policy",
+  "def": "SEC rules for automated access: send a descriptive User-Agent header with your name or company and contact email, and stay at or under 10 requests per second. Violations get 403 errors or temporary blocks.",
+  "why": "Claude Code often forgets the User-Agent at first. Catching that, and adding rate limiting, is a visible judgment signal.",
+  "aliases": [
+   "Fair access policy",
+   "User-Agent",
+   "Rate limit"
+  ],
+  "section": "9. SEC EDGAR mechanics"
+ },
+ {
+  "term": "Idempotency",
+  "def": "Running a step twice produces the same result as running it once, with no duplicates and no corruption. Achieved with stable IDs (e.g. accession number + exhibit) and upserts instead of blind inserts.",
+  "aliases": [
+   "Idempotency"
+  ],
+  "section": "10. Data platform concepts to name out loud"
+ },
+ {
+  "term": "Resumability",
+  "def": "A long job can stop and restart without redoing finished work, e.g. skipping files already on disk.",
+  "aliases": [
+   "Resumability"
+  ],
+  "section": "10. Data platform concepts to name out loud"
+ },
+ {
+  "term": "Backfill vs incremental load",
+  "def": "A backfill loads all historical data once. An incremental load processes only what's new since the last run (e.g. the latest quarter).",
+  "aliases": [
+   "Backfill",
+   "Incremental load"
+  ],
+  "section": "10. Data platform concepts to name out loud"
+ },
+ {
+  "term": "Provenance / lineage",
+  "def": "Being able to trace every value back to where it came from: source document, URL and section, and which code version extracted it. Any platform that promises \"verifiable data\" depends on it.",
+  "aliases": [
+   "Provenance",
+   "Lineage"
+  ],
+  "section": "10. Data platform concepts to name out loud"
+ },
+ {
+  "term": "Schema drift",
+  "def": "The shape of incoming data changing over time (renamed columns, new fields, changed types). Pipelines should detect it and fail loudly or adapt, never silently corrupt.",
+  "aliases": [
+   "Schema drift"
+  ],
+  "section": "10. Data platform concepts to name out loud"
+ },
+ {
+  "term": "Deduplication",
+  "def": "Removing duplicate records, e.g. amended filings or the same indenture re-filed as a 10-K exhibit.",
+  "aliases": [
+   "Deduplication"
+  ],
+  "section": "10. Data platform concepts to name out loud"
+ },
+ {
+  "term": "Data-quality rules",
+  "def": "Explicit checks on data, such as no negative amounts, dates in range or required fields present, with counts of how many rows fail each rule.",
+  "aliases": [
+   "Data-quality rules"
+  ],
+  "section": "10. Data platform concepts to name out loud"
+ },
+ {
+  "term": "Audit trail",
+  "def": "A tamper-evident log of who accessed or changed what, and when. Required in regulated environments.",
+  "aliases": [
+   "Audit trail"
+  ],
+  "section": "10. Data platform concepts to name out loud"
+ },
+ {
+  "term": "Right to erasure (GDPR)",
+  "def": "Under the EU's General Data Protection Regulation, people can demand deletion of their personal data. Platforms need to find and delete it everywhere it lives, including derived tables, indexes and backups.",
+  "aliases": [
+   "Right to erasure (GDPR)",
+   "GDPR"
+  ],
+  "section": "10. Data platform concepts to name out loud"
+ },
+ {
+  "term": "PII",
+  "def": "Personally identifiable information (names, emails, addresses, ID numbers). Usually must be minimized, masked in logs and access-controlled.",
+  "aliases": [
+   "PII"
+  ],
+  "section": "10. Data platform concepts to name out loud"
+ },
+ {
+  "term": "Chunking",
+  "def": "Splitting long documents into smaller pieces for search or LLM processing. For contracts, chunk by section heading rather than by fixed character count, so each chunk is one meaningful provision.",
+  "aliases": [
+   "Chunking"
+  ],
+  "section": "10. Data platform concepts to name out loud"
+ },
+ {
+  "term": "Embeddings",
+  "def": "Numeric vectors representing a text's meaning, so similar meanings land close together even when the words differ.",
+  "aliases": [
+   "Embeddings"
+  ],
+  "section": "10. Data platform concepts to name out loud"
+ },
+ {
+  "term": "Keyword search (BM25, full-text)",
+  "def": "Ranks documents by matching words, weighting rare terms higher. BM25 is the standard scoring formula. Precise for exact phrases, but misses paraphrases.",
+  "aliases": [
+   "Keyword search",
+   "BM25"
+  ],
+  "section": "10. Data platform concepts to name out loud"
+ },
+ {
+  "term": "Semantic search",
+  "def": "Ranks by embedding similarity, so it finds paraphrases, but can miss exact terms like a section number.",
+  "aliases": [
+   "Semantic search"
+  ],
+  "section": "10. Data platform concepts to name out loud"
+ },
+ {
+  "term": "Hybrid search",
+  "def": "Combines keyword and semantic scores (e.g. reciprocal rank fusion) to get the strengths of both.",
+  "aliases": [
+   "Hybrid search"
+  ],
+  "section": "10. Data platform concepts to name out loud"
+ },
+ {
+  "term": "Golden set",
+  "def": "A small hand-labeled set of correct answers used to measure an extraction or search system.",
+  "aliases": [
+   "Golden set"
+  ],
+  "section": "10. Data platform concepts to name out loud"
+ },
+ {
+  "term": "Precision and recall",
+  "def": "Precision: of the values the system returned, how many were correct. Recall: of the values that should have been found, how many were. Report both, per field.",
+  "ex": "If you extract a CoC price from 40 of 50 indentures and 38 are right: precision = 38/40 = 95%, recall = 38/50 = 76%.",
+  "aliases": [
+   "Precision",
+   "Recall"
+  ],
+  "section": "10. Data platform concepts to name out loud"
+ }
+]
